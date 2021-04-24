@@ -14,3 +14,7 @@ https://www.cise.ufl.edu/~sahni/dsaaj/enrich/c16/tries.htm
 https://users.dcc.uchile.cl/~gnavarro/ps/is15.2.pdf
 
 https://www.aclweb.org/anthology/W11-3503.pdf
+
+https://www.geeksforgeeks.org/trie-memory-optimization-using-hash-map/
+
+https://www.geeksforgeeks.org/trie-insert-and-search/
