@@ -15,11 +15,11 @@ public class Trie2 extends Trie{
 
     @Override
     public void add(String word){
-        if (root == null){
-            
 
 
-        }
+//        String[] segment;
+//        segment = word.split("");
+//        word.subSequence(1,2);
 
 
     }
@@ -39,7 +39,10 @@ public class Trie2 extends Trie{
 
     }
 
-
+    public static void main(String[] args) {
+        Trie2 dict = new Trie2();
+        dict.add("nihao");
+    }
 }
 
 

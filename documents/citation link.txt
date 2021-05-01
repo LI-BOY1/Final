@@ -6,12 +6,16 @@ http://stevehanov.ca/blog/?id=120
 https://www.computer.org/csdl/pds/api/csdl/proceedings/download-article/12OmNvjQ95P/pdf
 
 
-http://theoryofprogramming.com/2016/11/15/compressed-trie-tree/
+https://www.geeksforgeeks.org/compressed-tries/
 
+http://theoryofprogramming.com/2016/11/15/compressed-trie-tree/
 
 https://www.cise.ufl.edu/~sahni/dsaaj/enrich/c16/tries.htm
 
 https://users.dcc.uchile.cl/~gnavarro/ps/is15.2.pdf
+
+
+
 
 https://www.aclweb.org/anthology/W11-3503.pdf
 
