@@ -15,7 +15,11 @@ public class Trie2 extends Trie{
 
     @Override
     public void add(String word){
+        if (root == null){
+            
 
+
+        }
 
 
     }
