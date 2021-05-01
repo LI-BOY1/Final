@@ -15,11 +15,30 @@ public class Trie2 extends Trie{
 
     @Override
     public void add(String word){
+        int bitNumber = 3;
+        int remainder = word.length()%bitNumber;
+        int quotient = word.length()/bitNumber;
+
+        if(remainder == 0){
+            for(int i = 0; i < quotient; i++){
+                String input = (String)word.subSequence(i*bitNumber,(i+1)*bitNumber);
+                root 
+
+            }
+        }else{
 
 
-//        String[] segment;
-//        segment = word.split("");
-//        word.subSequence(1,2);
+
+
+
+
+        }
+
+
+
+        String[] segment;
+        segment = word.split("");
+        word.subSequence(1,2);
 
 
     }
