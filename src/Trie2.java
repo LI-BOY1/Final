@@ -49,7 +49,6 @@ public class Trie2 extends Trie{
             if(remainder == 0){  // this is the condition when the word length is multiple of 3
                 TrieNode2 temp;     // we need a  pointer to follow the iteration level to keep track of the level where we are now
                 temp = root;                      // each time we add a new word, we will start from the root
-                int iteration_number = 0;
                 boolean add_new_word = false;
                 for(int i = 0; i < quotient; i++){
                     String input = (String)word.subSequence(i*bitNumber,(i+1)*bitNumber);
@@ -107,12 +106,41 @@ public class Trie2 extends Trie{
 //        word.subSequence(1,2);
     }
 
-
     @Override
-    public boolean search(String word){
-
+    public boolean search(String word) {
         return false;
+    }
 
+
+    public String stringsearch(String word){
+        int bitNumber = 3;   // the number of letter would be stored in one level- one hash
+        int remainder = word.length()%bitNumber;  // to judge if the word length is the multiple of bitNumber
+        int quotient = word.length()/bitNumber;   // to judge if the word is less or more than 3
+        if(root == null){return "NO";}
+
+        if(quotient == 0){
+            if(root.children.containsKey("word length is less than 3")){
+                if(root.children.get("word length is less than 3").two_word_children.containsKey(word)){return "Yes";}
+                return "No";
+            }else{
+                return "No";
+            }
+        }else{
+            TrieNode2 temp = root;
+            int iteration_number = 0;
+            for(int i = 0; i < quotient; i++){
+                String input = (String)word.subSequence(i*bitNumber,(i+1)*bitNumber);
+                if (!temp.children.containsKey(input)){return "No";} // if the hashmap of the node does not contain the 3-letter key,it will return immediately and give false
+                temp = temp.children.get(input);
+                iteration_number++;
+            }if(remainder == 0){
+                return "Yes";
+            }else{
+                String input = (String)word.subSequence(iteration_number*bitNumber,word.length());
+                if (temp.children.containsKey(input)){return "Yes";}
+                return "No";
+            }
+        }
     }
 
     @Override
@@ -133,6 +161,17 @@ public class Trie2 extends Trie{
             dict.add(line);
         }
         System.out.println(dict.word_number);
+
+//        FileReader fr1 = new FileReader("English dictionary.txt");
+//        BufferedReader br1 = new BufferedReader(fr1);
+//        String line1;
+//        String check;
+//        int Number = 0;
+//        while((line1 = br1.readLine()) != null){
+//            check = dict.stringsearch(line1);
+//            if(check.equals("No")){System.out.println("have words not in the dict!");Number++;}
+//        }
+//        System.out.println(Number);
     }
 }
 
