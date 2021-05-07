@@ -1,24 +1,13 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.*;
+import java.util.*;
 
 
 class TrieNode2{
     String ch;
     Map<String, TrieNode2> children ;
-    Map<String, Integer> two_word_children ;
 
     public TrieNode2(){
-        children = new HashMap<>();
-    }
-
-    public TrieNode2(String string,int number){
-        two_word_children = new HashMap<String,Integer>();
-        two_word_children.put(string,number);
+        children = new LinkedHashMap<>();
     }
 }
 
@@ -26,6 +15,8 @@ public class Trie2 extends Trie{
 
     TrieNode2 root;
     int word_number = 0;
+    ArrayList<String> comporessed_letters;
+    int i = 0;
 
     @Override
     public void add(String word){
@@ -38,12 +29,14 @@ public class Trie2 extends Trie{
 
         if(quotient == 0){ // when quotient is equal to 0, we know that the word length is less than 3, so put it into a special hash
             if(!root.children.containsKey("word length is less than 3")){
+                TrieNode2 temp = new TrieNode2();
+                temp.children.put(word,new TrieNode2());
+                root.children.put("word length is less than 3",temp);
                 word_number++;
-                root.children.put("word length is less than 3",new TrieNode2(word,word_number));
             }else{
-                if(root.children.get("word length is less than 3").two_word_children.containsKey(word)){return;}
+                if(root.children.get("word length is less than 3").children.containsKey(word)){return;}
                 word_number++;
-                root.children.get("word length is less than 3").two_word_children.put(word,word_number);
+                root.children.get("word length is less than 3").children.put(word,new TrieNode2());
             }
         }else{  // this condition is when the word length is larger than 3
             if(remainder == 0){  // this is the condition when the word length is multiple of 3
@@ -101,9 +94,6 @@ public class Trie2 extends Trie{
                 word_number++;
             }
         }
-//        String[] segment;
-//        segment = word.split("");
-//        word.subSequence(1,2);
     }
 
     @Override
@@ -112,7 +102,7 @@ public class Trie2 extends Trie{
     }
 
 
-    public String stringsearch(String word){
+    public String Stringsearch(String word){
         int bitNumber = 3;   // the number of letter would be stored in one level- one hash
         int remainder = word.length()%bitNumber;  // to judge if the word length is the multiple of bitNumber
         int quotient = word.length()/bitNumber;   // to judge if the word is less or more than 3
@@ -120,7 +110,7 @@ public class Trie2 extends Trie{
 
         if(quotient == 0){
             if(root.children.containsKey("word length is less than 3")){
-                if(root.children.get("word length is less than 3").two_word_children.containsKey(word)){return "Yes";}
+                if(root.children.get("word length is less than 3").children.containsKey(word)){return "Yes";}
                 return "No";
             }else{
                 return "No";
@@ -145,12 +135,40 @@ public class Trie2 extends Trie{
 
     @Override
     public List<String> searchWithPrefix(String prefix){
-
         return new ArrayList<>();
-
     }
 
+    public void write_trie_to_txtfile(TrieNode2 node) throws IOException {
+        comporessed_letters = new ArrayList<>();
+        show_trie(node);
+        BufferedWriter out = new BufferedWriter(new FileWriter("test.txt"));
+        for(String key : comporessed_letters){
+            out.write(key+"\n");
+        }
+        out.close();
+    }
+
+    public void show_trie(TrieNode2 node) throws IOException {
+        Map<String,TrieNode2> map = node.children;
+        for (String key: map.keySet()){
+            comporessed_letters.add(key);
+            System.out.println(key);
+            show_trie(map.get(key));
+            i++;
+        }
+    }
+
+
+//    public void write(TrieNode2 node){
+//        Iterator<Map.Entry<String,TrieNode2>> entries = node.children.entrySet().iterator();
+//        while(entries.hasNext()){
+//            Map.Entry<String,TrieNode2> entry = entries.next();
+//        }
+//
+//    }
+
     public static void main(String[] args) throws IOException {
+        long startTime = System.currentTimeMillis();
         Trie2 dict = new Trie2();
 //        dict.add("nihao");
         System.out.println(dict.word_number);
@@ -160,7 +178,13 @@ public class Trie2 extends Trie{
         while((line = br.readLine()) != null){
             dict.add(line);
         }
+        long endTime = System.currentTimeMillis();
         System.out.println(dict.word_number);
+        System.out.println((endTime - startTime)+"ms");
+
+//        dict.write_trie();
+//
+//        System.out.println(dict.root.children.containsKey("abh"));
 
 //        FileReader fr1 = new FileReader("English dictionary.txt");
 //        BufferedReader br1 = new BufferedReader(fr1);
@@ -168,11 +192,32 @@ public class Trie2 extends Trie{
 //        String check;
 //        int Number = 0;
 //        while((line1 = br1.readLine()) != null){
-//            check = dict.stringsearch(line1);
+//            check = dict.Stringsearch(line1);
 //            if(check.equals("No")){System.out.println("have words not in the dict!");Number++;}
 //        }
 //        System.out.println(Number);
+
+
+//        Trie2 dict1 = new Trie2();
+////        dict.add("nihao");
+//        System.out.println(dict1.word_number);
+//        FileReader fr2 = new FileReader("test.txt");
+//        BufferedReader br2 = new BufferedReader(fr2);
+//        String line2;
+//        int a = 0;
+//        while((line2 = br2.readLine()) != null){
+//            dict1.add(line2);
+//            a++;
+//            if (line2.equals("aaa")){break;}
+//        }
+//        System.out.println(dict1.word_number);
+//
+////        dict1.write_trie();
+//
+//        System.out.println(dict1.root.children.containsKey("phe"));
+//        System.out.println(a);
+
+        dict.write_trie_to_txtfile(dict.root);
+        System.out.println(dict.i);
     }
 }
-
-
