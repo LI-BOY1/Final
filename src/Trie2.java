@@ -152,7 +152,8 @@ public class Trie2 extends Trie{
         Map<String,TrieNode2> map = node.children;
         for (String key: map.keySet()){
             comporessed_letters.add(key);
-            System.out.println(key);
+            if(node.equals(root)){System.out.print("\n");}
+            System.out.print(key+"\t");
             show_trie(map.get(key));
             i++;
         }
