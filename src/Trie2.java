@@ -16,6 +16,7 @@ public class Trie2 extends Trie{
     TrieNode2 root;
     int word_number = 0;
     ArrayList<String> comporessed_letters;
+    ArrayList<String> root_letters;
     int i = 0;
 
     @Override
@@ -140,10 +141,11 @@ public class Trie2 extends Trie{
 
     public void write_trie_to_txtfile(TrieNode2 node) throws IOException {
         comporessed_letters = new ArrayList<>();
+        root_letters = new ArrayList<>();
         show_trie(node);
         BufferedWriter out = new BufferedWriter(new FileWriter("test.txt"));
         for(String key : comporessed_letters){
-            out.write(key+"\n");
+            out.write(key+"\t");
         }
         out.close();
     }
@@ -152,7 +154,10 @@ public class Trie2 extends Trie{
         Map<String,TrieNode2> map = node.children;
         for (String key: map.keySet()){
             comporessed_letters.add(key);
-            if(node.equals(root)){System.out.print("\n");}
+            if(node.equals(root)){root_letters.add(key);}
+            if(node.equals(root)){
+                System.out.print("\n");
+            }
             System.out.print(key+"\t");
             show_trie(map.get(key));
             i++;
@@ -219,6 +224,6 @@ public class Trie2 extends Trie{
 //        System.out.println(a);
 
         dict.write_trie_to_txtfile(dict.root);
-        System.out.println(dict.i);
+//        System.out.println(dict.i);
     }
 }
