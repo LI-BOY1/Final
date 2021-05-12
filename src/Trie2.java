@@ -182,6 +182,25 @@ public class Trie2 extends Trie{
         }
     }
 
+    public void encoding() throws IOException {           //method use arithmetic encoding: ((a*26 + b)*26 + c)*26 to get the integer value and turned into the binary and write into the file to comporess
+        FileOutputStream fos = new FileOutputStream(new File("encoding.txt"));
+        fos.write(convert(strToBinary(comporessed_letters.get(0))));  // the first thing:word length is less than 3, cannot be encoded,
+        for(String input:comporessed_letters){                    // so it is turned into the binary string and then converted to binary number written into file
+            if (input.length() <= 3){
+                String[] string = input.split("");
+                int encoding_number = 0;
+                int sum = 0;
+                for(String c: string){
+                    encoding_number = (encoding_number + c.charAt(0)-'a')*26;
+                }
+                fos.write(encoding_number);
+                System.out.println(encoding_number);
+            }
+        }
+        fos.flush();
+        fos.close();
+    }
+
     public void writeBinaryToTxtfile(TrieNode2 node) throws IOException {
         turnIntoBinary(node);
         FileOutputStream fos = new FileOutputStream(new File("new_binary.dat"));
@@ -202,9 +221,6 @@ public class Trie2 extends Trie{
 //        }
 //        out.write(binary_array_number);
 //        out.close();
-    }
-
-    public void binary(){
     }
 
     public void turnIntoBinary(TrieNode2 node){    // method: iterate every subnode of the input node, input node included
@@ -345,7 +361,7 @@ public class Trie2 extends Trie{
 
         dict.writeTrieToTxtfile(dict.root);
         dict.writeBinaryToTxtfile(dict.root);
-
+        dict.encoding();
         //        System.out.println(dict.i);
     }
 }
