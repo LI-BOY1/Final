@@ -20,7 +20,7 @@ public class Trie2 extends Trie{
     ArrayList<String> comporessed_letters;
     ArrayList<String> root_letters;
     ArrayList binary_array_number = new ArrayList();
-    ArrayList binary_array = new ArrayList();
+    ArrayList<String> binary_array = new ArrayList<String>();
     int i = 0;
 
     @Override
@@ -184,70 +184,89 @@ public class Trie2 extends Trie{
 
     public void writeBinaryToTxtfile(TrieNode2 node) throws IOException {
         turnIntoBinary(node);
-        convert();
-        BufferedWriter out = new BufferedWriter(new FileWriter("binary.txt"));
-//        out.write(String.valueOf(binary_array));
-        for(Object key : binary_array_number){
-            out.write(key+"\t");
+        FileOutputStream fos = new FileOutputStream(new File("new_binary.dat"));
+        for(String input:binary_array){
+            byte[] data = convert(input);
+            for(byte fun:data){
+                fos.write(fun);
+                System.out.println(fun);
+            }
+//            fos.write(data,0, data.length);
         }
-        out.close();
+        fos.flush();
+        fos.close();
+//        BufferedWriter out = new BufferedWriter(new FileWriter("binary.dat"));
+//        out.write(String.valueOf(binary_array));
+//        for(Object key : binary_array_number){
+//            out.write(key+"\t");
+//        }
+//        out.write(binary_array_number);
+//        out.close();
     }
 
-    public void turnIntoBinary(TrieNode2 node){
-        Map<String,TrieNode2> map = node.children;
+    public void binary(){
+    }
+
+    public void turnIntoBinary(TrieNode2 node){    // method: iterate every subnode of the input node, input node included
+        Map<String,TrieNode2> map = node.children;  // and turn each char in the node into binary string and store in the binary_array
         for (String key: map.keySet()){
-            strToBinary(key);
+            binary_array.add(strToBinary(key));
             turnIntoBinary(map.get(key));
             }
     }
 
-    public ArrayList strToBinary(String s)
+    public byte[] convert(String string) throws IOException { // turn each binary string in the binary_array into byte
+//        FileOutputStream fos = new FileOutputStream(new File("new binary.txt"));
+//        ArrayList<Byte> Byte = new ArrayList<java.lang.Byte>();
+//        for(Object c: binary_array){
+        int iteration = string.length()/7;   // all the binary string in one position of the array, the length should be multiplied by 7 cause asci code determines
+        byte[] arr = new byte[iteration];
+        for(int i = 0 ; i < iteration; i++){    // arr contains the binary number converted from every length 7 binary string
+            arr[i] = Byte.parseByte(string.substring(i*7,(i+1)*7),2);
+        }
+        return arr;
+//            fos.write(arr);
+//            StringBuilder string = new StringBuilder();
+//            for(Object Byte:arr){
+//                 string.append(Byte+" ");
+//            }
+//            binary_array_number.add(string);
+        }
+//        fos.close();
+//         System.out.println(binary_array.get(1).getClass());
+//    }
+
+    public String strToBinary(String s)
     {
         int n = s.length();
-        String count = "";
+        StringBuilder count = new StringBuilder();
         for (int i = 0; i < n; i++)
         {
             // convert each char to
             // ASCII value
-            int val = Integer.valueOf(s.charAt(i));
+            int val = (int) s.charAt(i);
 
             // Convert ASCII value to binary
-            String bin = "";
+            StringBuilder bin = new StringBuilder();
             while (val > 0)
             {
                 if (val % 2 == 1)
                 {
-                    bin += '1';
+                    bin.append('1');
                 }
                 else
-                    bin += '0';
+                    bin.append('0');
                 val /= 2;
             }
-            bin = reverse(bin);
+            bin = new StringBuilder(reverse(bin.toString()));
 
 //            binary_array.add(Byte.parseByte(bin,2));
-            count += bin;
+            count.append(bin);   // use the stringbuilder to form a binary string
 //            System.out.print(bin + " ");
         }
-        binary_array.add(count);
-
-        return binary_array;
-    }
-
-    public void convert(){
-         for(Object c: binary_array){
-             ArrayList arr = new ArrayList();
-             int iteration = ((String)c).length()/7;
-             for(int i = 0 ; i < iteration; i++){
-                arr.add(Byte.parseByte(((String) c).substring(i*7,(i+1)*7),2));
-             }
-             StringBuilder string = new StringBuilder();
-             for(Object Byte:arr){
-                 string.append(Byte+" ");
-             }
-            binary_array_number.add(string);
-        }
-         System.out.println(binary_array_number);
+//        binary_array.add(count.toString());    // iteration ends, add the string to the arry
+        return count.toString();  // function of returning the binary string according to the asci code: a--> 01100001
+        // binary_array contains the binary string like 01010101
     }
 
     public String reverse(String input)
