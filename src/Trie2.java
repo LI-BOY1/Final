@@ -19,6 +19,7 @@ public class Trie2 extends Trie{
     int word_number = 0;
     ArrayList<String> comporessed_letters;
     ArrayList<String> root_letters;
+    ArrayList binary_array_number = new ArrayList();
     ArrayList binary_array = new ArrayList();
     int i = 0;
 
@@ -186,7 +187,7 @@ public class Trie2 extends Trie{
         convert();
         BufferedWriter out = new BufferedWriter(new FileWriter("binary.txt"));
 //        out.write(String.valueOf(binary_array));
-        for(Object key : binary_array){
+        for(Object key : binary_array_number){
             out.write(key+"\t");
         }
         out.close();
@@ -224,19 +225,29 @@ public class Trie2 extends Trie{
             }
             bin = reverse(bin);
 
-            binary_array.add(Byte.parseByte(bin,2));
-//            count += bin;
+//            binary_array.add(Byte.parseByte(bin,2));
+            count += bin;
 //            System.out.print(bin + " ");
         }
-
+        binary_array.add(count);
 
         return binary_array;
     }
 
     public void convert(){
-        for(Object c: binary_array){
-            System.out.println(c.getClass());
+         for(Object c: binary_array){
+             ArrayList arr = new ArrayList();
+             int iteration = ((String)c).length()/7;
+             for(int i = 0 ; i < iteration; i++){
+                arr.add(Byte.parseByte(((String) c).substring(i*7,(i+1)*7),2));
+             }
+             StringBuilder string = new StringBuilder();
+             for(Object Byte:arr){
+                 string.append(Byte+" ");
+             }
+            binary_array_number.add(string);
         }
+         System.out.println(binary_array_number);
     }
 
     public String reverse(String input)
