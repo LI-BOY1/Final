@@ -8,10 +8,118 @@ import java.util.*;
 public class Trie3 extends Trie{
     private TrieNode root;
     public List<String> byteList;
+    public int numOfNodes;
+    char[] chaArray;
+
     public Trie3(){
         this.root = new TrieNode();
         this.byteList = new ArrayList<>();
+        this.numOfNodes = 0;
+        chaArray = new char[26];
+        for(char c = 'a'; c <= 'z'; c++){
+            int i = c - 'a';
+            chaArray[i] = c;
+        }
     }
+
+    public Trie3(byte[] A){
+        chaArray = new char[26];
+        for(char c = 'a'; c <= 'z'; c++){
+            int i = c - 'a';
+            chaArray[i] = c;
+        }
+        this.byteList = new ArrayList<>();
+        this.numOfNodes = 0;
+
+
+        // 4个byte 为一组 --> 1个trienode
+        // 先把每个byte变成 string, 去掉leading zeros, and concate together.---> string
+        // 每个string 第一位是is leaf, 第二位是 isword, 剩下26位是 26个 trienode
+        Deque<String> dequeS = new ArrayDeque<>();
+
+        for(int i = 0; i < A.length; i+=4){
+            byte b1 = A[i];
+            byte b2 = A[i+1];
+            byte b3 = A[i+2];
+            byte b4 = A[i+3];
+
+            String[] arr = new String[4];
+
+            arr[0] = String.format("%8s", Integer.toBinaryString(b1 & 0xFF)).replace(' ', '0');
+            arr[1] = String.format("%8s", Integer.toBinaryString(b2 & 0xFF)).replace(' ', '0');
+            arr[2] = String.format("%8s", Integer.toBinaryString(b3 & 0xFF)).replace(' ', '0');
+            arr[3] = String.format("%8s", Integer.toBinaryString(b4 & 0xFF)).replace(' ', '0');
+
+            // System.out.println(arr[0] + " " + arr[1] + " " + arr[2] + " " + arr[3]);
+
+            String node = arr[0].substring(1) + arr[1].substring(1) + arr[2].substring(1) + arr[3].substring(1);
+            dequeS.offerLast(node);
+        }
+
+        root = new TrieNode();
+        Queue<TrieNode> q = new LinkedList<>();
+        q.offer(root);
+
+        while(!q.isEmpty()){
+            TrieNode node = q.poll();
+            String s = dequeS.pollFirst();
+            // System.out.println(s);
+
+            if(s.charAt(0) == '0'){ // not a leaf
+
+            }else{ // is a leaf
+
+            }
+
+            if(s.charAt(1) == '1'){
+                node.isword = true;
+            }else{
+                node.isword = false;
+            }
+
+            for(int i = 2; i < s.length(); i++){
+                if(s.charAt(i) == '1'){
+                    char ch = cal(i);
+                    int index = ch - 'a';
+                    //System.out.println(index + "   " + ch + "   " + i);
+                    node.children[index] = new TrieNode(ch);
+                    q.offer(node.children[index]);
+                }
+            }
+        }
+    }
+
+    private char cal(int i){
+        return chaArray[i - 2];
+    }
+
+    public void compare(Trie3 trie) throws Exception {
+        Queue<TrieNode> q1 = new LinkedList<>();
+        Queue<TrieNode> q2 = new LinkedList<>();
+
+        while(!q1.isEmpty() && !q2.isEmpty()){
+            TrieNode n1 = q1.poll();
+            TrieNode n2 = q2.poll();
+
+            if(n1.ch != n2.ch){
+                throw new Exception("no same");
+            }
+
+            for(int j = 0; j < n1.children.length; j++){
+                if(n1.children[j] != null) {
+                    q1.offer(n1.children[j]);
+                }
+            }
+
+            for(int j = 0; j < n2.children.length; j++){
+                if(n2.children[j] != null) {
+                    q2.offer(n2.children[j]);
+                }
+            }
+        }
+    }
+
+
 
     @Override
     public void add(String word){
@@ -77,6 +185,7 @@ public class Trie3 extends Trie{
                 int size = q.size();
                 for(int i = 0; i < size; i++){
                     TrieNode node = q.poll();
+                    numOfNodes++;
                     byte[] array = convert(node);
                     fos.write(array);
 
@@ -151,92 +260,9 @@ public class Trie3 extends Trie{
         }
 
         return ans;
-
-
-
-
-
-
-
-
-
-
-//        BitSet bitSet = new BitSet(s.length());
-//
-//        for(int i = 0; i < s.length(); i++){
-//            if(s.charAt(i) == '1'){
-//                bitSet.set(i);
-//            }
-//        }
-//
-//        byte[] A = bitSet.toByteArray();
-//        System.out.println(A.length);
-//        return A;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//        byte[] a = new BigInteger(s, 2).toByteArray();
-//        System.out.println(s + "   " + node.ch + "   " + a.length);
-//        return a;
-
-//        short a = Short.parseShort(s, 2);
-//        ByteBuffer bytes = ByteBuffer.allocate(4).putShort(a);
-//
-//        byte[] array = bytes.array();
-//        System.out.println(s + "   " + node.ch + "   " + array.length);
-//        return array;
-
-
-
-
-
-
-//        byte[] array = new byte[4];
-//        int index = 0;
-//
-//
-//
-//
-//
-//
-//        for(int i = 0; i < s.length(); i+=8){
-//            String b = s.substring(i, i+8);
-//            byte mybyte = 0;
-//
-//
-//
-//
-//
-//
-//
-//
-//            array[index++] = Byte.parseByte(b, 2);
-//            System.out.println(b + "  " + Byte.parseByte(b, 2));
-//        }
-//
-//        System.out.println(s + "   " + node.ch + "   " + array.length);
-//
-//        return array;
-
-        // return new byte[0];
     }
 
-
-
-
 }
-
 
 class TrieNode{
     TrieNode[] children;
