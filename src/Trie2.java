@@ -16,12 +16,11 @@ class TrieNode2{
 public class Trie2 extends Trie{
 
     TrieNode2 root;
-    int word_number = 0;
-    ArrayList<String> comporessed_letters;
-    ArrayList<String> root_letters;
-    ArrayList binary_array_number = new ArrayList();
-    ArrayList<String> binary_array = new ArrayList<String>();
-    int i = 0;
+    int word_number = 0;        // this is used to count how many unduplicated words have been stored  in the trie.
+    ArrayList<String> comporessed_letters;   // compressed_letters stores the string which is the key of the hashmap
+    ArrayList<String> root_letters;   // uesd to store the 3-letter in the root
+    ArrayList<String> binary_array = new ArrayList<String>();     //binary_array is used to store the binary string of each key in the hashmap
+//    int i = 0;
 
     @Override
     public void add(String word){
@@ -160,7 +159,7 @@ public class Trie2 extends Trie{
         comporessed_letters = new ArrayList<>();
         root_letters = new ArrayList<>();
         showTrie(node);
-        BufferedWriter out = new BufferedWriter(new FileWriter("test.txt"));
+        BufferedWriter out = new BufferedWriter(new FileWriter("uncompressed.dat"));
         for(String key : comporessed_letters){
             out.write(key+"\t");
         }
@@ -184,12 +183,12 @@ public class Trie2 extends Trie{
       //
     public void writeBinaryToTxtfile(TrieNode2 node) throws IOException {
         turnIntoBinary(node);
-        FileOutputStream fos = new FileOutputStream(new File("new_binary.dat"));
+        FileOutputStream fos = new FileOutputStream(new File("compressed.dat"));
         for(String input:binary_array){
             byte[] data = convert(input);
             for(byte fun:data){
                 fos.write(fun);
-                System.out.println(fun);
+//                System.out.println(fun);
             }
 //            fos.write(data,0, data.length);
         }
@@ -200,7 +199,7 @@ public class Trie2 extends Trie{
     public void turnIntoBinary(TrieNode2 node){    // method: iterate every subnode of the input node, input node included
         Map<String,TrieNode2> map = node.children;  // and turn each char in the node into binary string and store in the binary_array
         for (String key: map.keySet()){
-            binary_array.add(strToBinary(key));
+            binary_array.add(strToBinary(key));  //binary_array is used to store the binary string of each key in the hashmap
             turnIntoBinary(map.get(key));
             }
     }
