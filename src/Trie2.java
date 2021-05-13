@@ -172,7 +172,7 @@ public class Trie2 extends Trie{
             comporessed_letters.add(key);
             if(node.equals(root)){
                 root_letters.add(key);
-                System.out.print("\n");
+                System.out.println("\n");
 //                System.out.print(key+"\t");
             }
             System.out.print(key+"\t");
