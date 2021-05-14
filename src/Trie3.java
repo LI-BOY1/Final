@@ -10,9 +10,9 @@ public class Trie3 extends Trie{
     }
 
     @Override
-    public boolean search(String word){
+    public void search(String word){
 
-        return false;
+        return;
 
     }
 
@@ -22,5 +22,4 @@ public class Trie3 extends Trie{
         return new ArrayList<>();
 
     }
-
 }
