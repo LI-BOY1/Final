@@ -159,7 +159,7 @@ public class Trie2 extends Trie{
         comporessed_letters = new ArrayList<>();
         root_letters = new ArrayList<>();
         showTrie(node);
-        BufferedWriter out = new BufferedWriter(new FileWriter("uncompressed.dat"));
+        BufferedWriter out = new BufferedWriter(new FileWriter("compressed.txt"));
         for(String key : comporessed_letters){
             out.write(key+"\t");
         }
@@ -172,10 +172,9 @@ public class Trie2 extends Trie{
             comporessed_letters.add(key);
             if(node.equals(root)){
                 root_letters.add(key);
-                System.out.println("\n");
-//                System.out.print(key+"\t");
+//                System.out.print("\n");
             }
-            System.out.print(key+"\t");
+//            System.out.print(key+"\t");
             showTrie(map.get(key));
 //            i++;
         }
@@ -183,13 +182,14 @@ public class Trie2 extends Trie{
       //
     public void writeBinaryToTxtfile(TrieNode2 node) throws IOException {
         turnIntoBinary(node);
-        FileOutputStream fos = new FileOutputStream(new File("compressed.dat"));
+        FileOutputStream fos = new FileOutputStream(new File("compressed1.dat"));
         for(String input:binary_array){
             byte[] data = convert(input);
             for(byte fun:data){
                 fos.write(fun);
-//                System.out.println(fun);
+                System.out.print(fun+"\t");
             }
+            System.out.println("\n");
 //            fos.write(data,0, data.length);
         }
         fos.flush();
