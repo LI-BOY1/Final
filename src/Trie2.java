@@ -213,7 +213,7 @@ public class Trie2 extends Trie{
         return arr;
     }
 
-    public String strToBinary(String s)
+    public String strToBinary(String s)    // turn the string into the binary string .. need to be further improved to neglect the first "0"
     {
         int n = s.length();
         StringBuilder count = new StringBuilder();
